@@ -1,4 +1,4 @@
-import { json, redirect, error, fail } from '@sveltejs/kit';
+import { json, fail } from '@sveltejs/kit';
 
 export const _message1xx = Object.freeze({
 	100: '100 Continue',
@@ -83,6 +83,18 @@ const hasKey = <T extends { [key in number]: string }>(
 	const keys = Object.keys(object).map((s) => Number(s));
 	return keys.includes(key);
 };
+
+const returnResponse = (object: { [key in number]: string }, _code: number) => {
+	if (hasKey(object, _code)) {
+		const response = {
+			status: _code,
+			statusText: object[_code]
+		};
+		return json(response, response);
+	} else {
+		throw fail(500);
+	}
+};
 export async function GET({ params }) {
 	const _code = Number(params.code);
 	if (!Number.isInteger(_code)) throw fail(500);
@@ -105,59 +117,16 @@ export async function GET({ params }) {
 			}
 		}
 		case _code >= 200 && _code <= 226: {
-			if (hasKey(_message2xx, _code)) {
-				return json(
-					{
-						status_code: _code,
-						message: _message2xx[_code]
-					},
-					{
-						status: _code,
-						statusText: _message2xx[_code]
-					}
-				);
-			} else {
-				throw fail(500);
-			}
-		}
-		case _code >= 400 && _code <= 451: {
-			if (hasKey(_message4xx, _code)) {
-				return json(
-					{
-						status_code: _code,
-						message: _message4xx[_code]
-					},
-					{
-						status: _code,
-						statusText: _message4xx[_code]
-					}
-				);
-			} else {
-				throw fail(500);
-			}
+			return returnResponse(_message2xx, _code);
 		}
 		case _code >= 300 && _code <= 308: {
-			if (hasKey(_message3xx, _code)) {
-				return redirect(_code, '/');
-			} else {
-				throw fail(500);
-			}
+			return returnResponse(_message3xx, _code);
+		}
+		case _code >= 400 && _code <= 451: {
+			return returnResponse(_message4xx, _code);
 		}
 		case _code >= 500 && _code <= 511: {
-			if (hasKey(_message5xx, _code)) {
-				return json(
-					{
-						status_code: _code,
-						message: _message5xx[_code]
-					},
-					{
-						status: _code,
-						statusText: _message5xx[_code]
-					}
-				);
-			} else {
-				throw fail(500);
-			}
+			return returnResponse(_message5xx, _code);
 		}
 		default: {
 			throw fail(500);
