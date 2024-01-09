@@ -88,30 +88,50 @@ export async function GET({ params }) {
 	if (!Number.isInteger(_code)) throw fail(500);
 	switch (true) {
 		case _code >= 100 && _code <= 103: {
+			// jsonは200〜599までしか返せないのでエラーになる
 			if (hasKey(_message1xx, _code)) {
-				return json({
-					status_code: _code,
-					message: _message1xx[_code]
-				});
+				return json(
+					{
+						status_code: _code,
+						message: _message1xx[_code]
+					},
+					{
+						status: _code,
+						statusText: _message1xx[_code]
+					}
+				);
 			} else {
 				throw fail(500);
 			}
 		}
 		case _code >= 200 && _code <= 226: {
 			if (hasKey(_message2xx, _code)) {
-				return json({
-					status_code: _code,
-					message: _message2xx[_code]
-				});
+				return json(
+					{
+						status_code: _code,
+						message: _message2xx[_code]
+					},
+					{
+						status: _code,
+						statusText: _message2xx[_code]
+					}
+				);
 			} else {
 				throw fail(500);
 			}
 		}
 		case _code >= 400 && _code <= 451: {
 			if (hasKey(_message4xx, _code)) {
-				throw error(_code, {
-					message: _message4xx[_code]
-				});
+				return json(
+					{
+						status_code: _code,
+						message: _message4xx[_code]
+					},
+					{
+						status: _code,
+						statusText: _message4xx[_code]
+					}
+				);
 			} else {
 				throw fail(500);
 			}
@@ -125,9 +145,16 @@ export async function GET({ params }) {
 		}
 		case _code >= 500 && _code <= 511: {
 			if (hasKey(_message5xx, _code)) {
-				throw error(_code, {
-					message: _message5xx[_code]
-				});
+				return json(
+					{
+						status_code: _code,
+						message: _message5xx[_code]
+					},
+					{
+						status: _code,
+						statusText: _message5xx[_code]
+					}
+				);
 			} else {
 				throw fail(500);
 			}
