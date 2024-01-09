@@ -1,13 +1,13 @@
 import { json, redirect, error, fail } from '@sveltejs/kit';
 
-const message1xx = Object.freeze({
+export const _message1xx = Object.freeze({
 	100: '100 Continue',
 	101: '101 Switching Protocols',
 	102: '102 Processing',
 	103: '103 Early Hints'
 });
 
-const message2xx = Object.freeze({
+export const _message2xx = Object.freeze({
 	200: '200 OK',
 	201: '201 Created',
 	202: '202 Accepted',
@@ -20,7 +20,7 @@ const message2xx = Object.freeze({
 	226: '226 IM Used'
 });
 
-const message3xx = Object.freeze({
+export const _message3xx = Object.freeze({
 	300: '300 Multiple Choices',
 	301: '301 Moved Permanently',
 	302: '302 Found',
@@ -30,7 +30,7 @@ const message3xx = Object.freeze({
 	308: '308 Permanent Redirect'
 });
 
-const message4xx = Object.freeze({
+export const _message4xx = Object.freeze({
 	400: '400 Bad Request',
 	401: '401 Unauthorized',
 	402: '402 Payment Required',
@@ -62,7 +62,7 @@ const message4xx = Object.freeze({
 	451: '451 Unavailable For Legal Reasons'
 });
 
-const message5xx = Object.freeze({
+export const _message5xx = Object.freeze({
 	500: '500 Internal Server Error',
 	501: '501 Not Implemented',
 	502: '502 Bad Gateway',
@@ -88,45 +88,45 @@ export async function GET({ params }) {
 	if (!Number.isInteger(_code)) throw fail(500);
 	switch (true) {
 		case _code >= 100 && _code <= 103: {
-			if (hasKey(message1xx, _code)) {
+			if (hasKey(_message1xx, _code)) {
 				return json({
 					status_code: _code,
-					message: message1xx[_code]
+					message: _message1xx[_code]
 				});
 			} else {
 				throw fail(500);
 			}
 		}
 		case _code >= 200 && _code <= 226: {
-			if (hasKey(message2xx, _code)) {
+			if (hasKey(_message2xx, _code)) {
 				return json({
 					status_code: _code,
-					message: message2xx[_code]
+					message: _message2xx[_code]
 				});
 			} else {
 				throw fail(500);
 			}
 		}
 		case _code >= 400 && _code <= 451: {
-			if (hasKey(message4xx, _code)) {
+			if (hasKey(_message4xx, _code)) {
 				throw error(_code, {
-					message: message4xx[_code]
+					message: _message4xx[_code]
 				});
 			} else {
 				throw fail(500);
 			}
 		}
 		case _code >= 300 && _code <= 308: {
-			if (hasKey(message3xx, _code)) {
+			if (hasKey(_message3xx, _code)) {
 				return redirect(_code, '/');
 			} else {
 				throw fail(500);
 			}
 		}
 		case _code >= 500 && _code <= 511: {
-			if (hasKey(message5xx, _code)) {
+			if (hasKey(_message5xx, _code)) {
 				throw error(_code, {
-					message: message5xx[_code]
+					message: _message5xx[_code]
 				});
 			} else {
 				throw fail(500);
