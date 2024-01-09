@@ -43,7 +43,7 @@
 	</section>
 {/snippet}
 <main class="sections">
-	{@render sectionStatusCode({ title: '1xx', object: _message1xx, json: false })}
+	{@render sectionStatusCode({ title: '1xx', object: _message1xx, json: true })}
 	{@render sectionStatusCode({ title: '2xx', object: _message2xx, json: true })}
 	{@render sectionStatusCode({ title: '3xx', object: _message3xx, json: false })}
 	{@render sectionStatusCode({ title: '4xx', object: _message4xx, json: true })}
