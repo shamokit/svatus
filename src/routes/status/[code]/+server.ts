@@ -88,16 +88,16 @@ export async function GET({ params }) {
 	if (!Number.isInteger(_code)) throw fail(500);
 	switch (true) {
 		case _code >= 100 && _code <= 103: {
-			// jsonは200〜599までしか返せないのでエラーになる
 			if (hasKey(_message1xx, _code)) {
-				return json(
-					{
-						status_code: _code,
-						message: _message1xx[_code]
-					},
-					{
+				return new Response(
+					JSON.stringify({
 						status: _code,
 						statusText: _message1xx[_code]
+					}),
+					{
+						headers: {
+							'Content-Type': 'application/json'
+						}
 					}
 				);
 			} else {
