@@ -13,7 +13,7 @@
 	>
 </p>
 
-{#snippet sectionStatusCode({ title, object, json })}
+{#snippet sectionStatusCode({ title, object })}
 	<section>
 		<h2>{title}</h2>
 		<table class="table">
@@ -22,9 +22,7 @@
 					<th>path</th>
 					<th>status code</th>
 					<th>description</th>
-					{#if json}
-						<th>response json</th>
-					{/if}
+					<th>response json</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -33,9 +31,7 @@
 						<td><code>/status/{key}</code></td>
 						<td>{key}</td>
 						<td>{object[key]}</td>
-						{#if json}
-							<td><a href="/status/{key}">https://svatus.pages.dev/status/{key}</a></td>
-						{/if}
+						<td><a href="/status/{key}">https://svatus.pages.dev/status/{key}</a></td>
 					</tr>
 				{/each}
 			</tbody>
@@ -43,11 +39,11 @@
 	</section>
 {/snippet}
 <main class="sections">
-	{@render sectionStatusCode({ title: '1xx', object: _message1xx, json: true })}
-	{@render sectionStatusCode({ title: '2xx', object: _message2xx, json: true })}
-	{@render sectionStatusCode({ title: '3xx', object: _message3xx, json: false })}
-	{@render sectionStatusCode({ title: '4xx', object: _message4xx, json: true })}
-	{@render sectionStatusCode({ title: '5xx', object: _message5xx, json: true })}
+	{@render sectionStatusCode({ title: '1xx', object: _message1xx })}
+	{@render sectionStatusCode({ title: '2xx', object: _message2xx })}
+	{@render sectionStatusCode({ title: '3xx', object: _message3xx })}
+	{@render sectionStatusCode({ title: '4xx', object: _message4xx })}
+	{@render sectionStatusCode({ title: '5xx', object: _message5xx })}
 </main>
 
 <style>
